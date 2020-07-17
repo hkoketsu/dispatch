@@ -172,14 +172,6 @@ def create(
     for t in tags:
         tag_objs.append(tag_service.get_or_create(db_session=db_session, tag_in=TagCreate(**t)))
 
-    # we associate "default" or empty resources which will then
-    # be filled in by other flows when appropriate this enables
-    # resources to be optional
-    conversation = conversation_service.get_default_conversation(db_session=db_session)
-    conference = conference_service.get_default_conference(db_session=db_session)
-    storage = storage_service.get_default_storage(db_session=db_session)
-    ticket = ticket_service.get_default_ticket(db_session=db_session)
-
     # We create the incident
     incident = Incident(
         title=title,
@@ -188,10 +180,6 @@ def create(
         incident_type=incident_type,
         incident_priority=incident_priority,
         visibility=visibility,
-        conversation=conversation,
-        conference=conference,
-        storage=storage,
-        ticket=ticket,
         tags=tag_objs,
     )
     db_session.add(incident)
